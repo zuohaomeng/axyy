@@ -1,0 +1,56 @@
+{
+	"status": 0,
+	"msg": "ok",
+	"data": [{
+			"id": 1,
+			"name": "住户管理",
+			"icon": "&#xe6b8;",
+			"url": "",
+			"children": [{
+				"id": 2,
+				"name": "住户列表",
+				"icon": "",
+				"url": "./pages/user/list.html"
+			}]
+		}, 
+		{
+			"id": 3,
+			"name": "信息管理",
+			"icon": "&#xe705;",
+			"url": "",
+			"children": [{
+				"id": 4,
+				"name": "通知公告",
+				"icon": "",
+				"url": "./pages/message/notice_list.html"
+			},{
+				"id": 5,
+				"name": "投诉建议",
+				"icon": "",
+				"url": "./pages/message/suggest_list.html"
+			}]
+		},
+		{
+			"id": 6,
+			"name": "订单管理",
+			"icon": "&#xe723;",
+			"url": "",
+			"children": [{
+				"id": 7,
+				"name": "物业报修",
+				"icon": "",
+				"url": "./pages/order/repair_list.html"
+			},{
+				"id": 8,
+				"name": "家政预约",
+				"icon": "",
+				"url": "./pages/order/clean_list.html"
+			},{
+				"id": 9,
+				"name": "一键订水",
+				"icon": "",
+				"url": "./pages/order/water_list.html"
+			}]
+		}	
+	]
+}

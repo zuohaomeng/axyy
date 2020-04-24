@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>添加消息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../static/css/font.css">
+    <link rel="stylesheet" href="../../static/css/weadmin.css">
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../lib/layui/css/modules/layer/default/layer.css" media="all">
+    <script type="text/javascript" src="../../lib/jquery-2.1.3.min.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="weadmin-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label">分类</label>
+            <div class="layui-input-inline">
+                <select id="type" name="type" lay-verify="required" autocomplete="off" class="layui-input">
+                    <option value="小区活动" selected="">小区活动</option>
+                    <option value="水电缴费" >水电缴费</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="title" class="layui-form-label">标题</label>
+            <div class="layui-input-inline">
+                <input type="text" id="title" name="title" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="content" class="layui-form-label">通知内容</label>
+            <div class="layui-input-inline">
+                <textarea type="text" id="content" name="content"  cols="40"  rows="40" lay-verify="required" autocomplete="off" class="layui-input">
+                </textarea>
+            </div>
+        </div>
+        <input name="imgurl" id="imgurl" hidden>
+        <div class="layui-form-item" style="left: 100px">
+            <label for="content" class="layui-form-label">图片</label>
+            <button type="button" class="layui-btn" id="test1">上传图片</button>
+        </div>
+        <div class="layui-form-item" style="left: 100px">
+            <label for="content" class="layui-form-label"></label>
+            <div class="layui-upload-list" style="left: 20px">
+                <img class="layui-upload-img" id="demo1" style="width: 300px;height: 100px">
+                <p id="demoText"></p>
+            </div>
+        </div>
+
+        <button type="submit" class="layui-btn" lay-submit lay-filter="add"
+                style="position: relative; left: 20% ">立即添加
+        </button>
+    </form>
+
+
+</div>
+<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../../lib/layui/lay/modules/layer.js"></script>
+<script>
+    layui.use(['form', 'layer','upload'], function () {
+        var form = layui.form,
+            $ = layui.jquery,
+            upload = layui.upload,
+            layer = layui.layer;
+
+        //监听提交
+        form.on('submit(add)', function (data) {
+            console.log(data);
+            $.ajax({
+                url: 'http://localhost:10010/notice/add',
+                type: 'POST',
+                data: JSON.stringify(data.field),
+                contentType: 'application/json',
+                //请求成功时执行该函数
+                success: function (result) {
+                    if (result.code == '0') {
+                        layer.msg(result.msg, {time: 1 * 1000}, function () {
+                            // location.reload();
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    } else {
+                        alert(result.msg);
+                    }
+                },
+                //请求失败时执行该函数
+                error: function (errorMsg) {
+                    alert("数据异常!" + errorMsg.msg);
+                }
+            });
+            return false;
+        });
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: 'http://localhost:10010/img/upload' //改成您自己的上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+
+                });
+            }
+            ,done: function(res){
+                console.log(res.code)
+                //如果上传失败
+                if(res.code < 0){
+                    return layer.msg('上传失败');
+                }else {
+                    $('#imgurl').attr('value', res.data); //图片链接（base64）
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./static/css/font.css">
+	<link rel="stylesheet" href="./static/css/weadmin.css">
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+
+</head>
+<body class="login-bg">
+    <div class="login">
+        <div class="message">安昕雅苑小区-管理登录</div>
+        <div id="darkbannerwrap"></div>
+        
+        <form method="post" class="layui-form" >
+            <input name="type" value="2" hidden />
+            <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
+            <hr class="hr15">
+            <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
+            <hr class="hr15">
+            <input class="loginin" value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+            <hr class="hr20" >
+        </form>
+    </div>
+
+    <script type="text/javascript">
+
+        layui.extend({
+            admin: '{/}./static/js/admin'
+        });
+        layui.use(['form','admin','jquery'], function(){
+            var form = layui.form,
+                admin = layui.admin,
+                $ = layui.$;
+
+            //请求登录
+            form.on('submit(login)', function(data){
+                //ajax请求
+                $.ajax({
+                    url: 'http://127.0.0.1:10010/user/login',
+                    type: 'POST',
+                    data: JSON.stringify(data.field),
+                    contentType: 'application/json',
+                    //请求成功时执行该函数
+                    success: function (result) {
+                        if (result.code == '0') {
+                            window.location.href = "./index.html";
+                        } else {
+                            alert(result.msg);
+                        }
+                    },
+                    //请求失败时执行该函数
+                    error: function (errorMsg) {
+                        alert("数据异常!" + errorMsg.msg);
+                    }
+                });  
+                
+                return false;
+            });
+        });   
+    </script>  
+</body>
+</html>
