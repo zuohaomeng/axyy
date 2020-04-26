@@ -1,6 +1,8 @@
 package com.axyy.util;
 
 
+import cn.hutool.core.date.DateUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,7 +15,8 @@ public class IDUtil {
     public static String createId(){
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(" yyyyMMddHHmmss");
-        return simpleDateFormat.format(date);
+        String id = simpleDateFormat.format(date)+(DateUtil.current(true)/100%100);
+        return id;
     }
 
     public static void main(String[] args) {

@@ -34,7 +34,7 @@ public interface RepairService {
      * @param repair
      * @return
      */
-    Integer add(Repair repair);
+    Long add(Repair repair);
 
     int deleteList(List<Repair> repairs);
 

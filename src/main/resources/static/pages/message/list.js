@@ -63,7 +63,7 @@ layui.use(['table', 'jquery', 'form', 'admin'], function () {
         if (obj.event === 'watch') {
             layer.open({
                 type: 2,
-                area: [($(window).width() * 0.9) + 'px', ($(window).height() - 50) + 'px'],
+                area: [($(window).width() * 0.5) + 'px', ($(window).height() - 50) + 'px'],
                 fix: false, //不固定
                 maxmin: true,
                 shadeClose: true,

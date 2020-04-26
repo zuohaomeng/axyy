@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,5 +26,16 @@ public class ImgServiceImpl implements ImgService {
                 .eq(Img::getType, type)
                 .eq(Img::getForeignId, foreignId));
         return imgs;
+    }
+
+    @Override
+    public int insert(int type, Long foreignId, String url) {
+        Img img = Img.builder()
+                .createTime(new Date())
+                .foreignId(foreignId)
+                .type(type)
+                .url(url)
+                .valid(1).build();
+        return imgMapper.insert(img);
     }
 }

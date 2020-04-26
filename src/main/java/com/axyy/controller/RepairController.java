@@ -38,15 +38,7 @@ public class RepairController {
         return map;
     }
 
-    @ApiOperation("add")
-    @PostMapping("add")
-    public RequestResult add(Repair repair) {
-        Integer result = repairService.add(repair);
-        if (result > 0) {
-            return RequestResult.SUCCESS();
-        }
-        return RequestResult.ERROR("添加失败");
-    }
+
 
     @ApiOperation("批量删除")
     @PostMapping("deleteList")
@@ -79,13 +71,30 @@ public class RepairController {
         map.put("data", repairs);
         return map;
     }
+
     @ApiOperation("调整状态")
     @RequestMapping("setnext")
-    public RequestResult setNext(Long id){
+    public RequestResult setNext(Long id) {
         int result = repairService.setNext(id);
         if (result > 0) {
             return RequestResult.SUCCESS();
         }
         return RequestResult.ERROR("修改失败");
     }
+
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    @ApiOperation("插入数据")
+    @PostMapping("addByUserId")
+    public RequestResult add(@RequestBody String content,@RequestParam long userid) {
+        Repair repair = new Repair();
+        repair.setContent(content);
+        repair.setUserid(userid);
+        Long repairId = repairService.add(repair);
+        if (repairId > 0) {
+            return RequestResult.SUCCESS("",repairId);
+        }
+        return RequestResult.ERROR("添加失败");
+    }
+
+
 }

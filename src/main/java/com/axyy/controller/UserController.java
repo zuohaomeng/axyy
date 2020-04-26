@@ -9,6 +9,7 @@ import com.axyy.util.RequestResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,8 +77,11 @@ public class UserController {
         ObjectMapper mapper = new ObjectMapper();
         OpenIdJson openIdJson = mapper.readValue(result, OpenIdJson.class);
         log.info("result={}", result.toString());
-
-        return RequestResult.SUCCESS("", openIdJson.getOpenid());
+        User user = userService.getUserByOpenid(openIdJson.getOpenid());
+        if (user == null) {
+            return RequestResult.SUCCESS("", openIdJson.getOpenid());
+        }
+        return RequestResult.SUCCESS(String.valueOf(user.getId()), openIdJson.getOpenid());
     }
 
     @ApiOperation("获取用户资料")
@@ -96,7 +100,7 @@ public class UserController {
     public RequestResult saveUserInfo(@RequestBody User user,
                                       @RequestParam("openid") String openid,
                                       @RequestParam("roomid") String roomid) {
-        if(!"axyy".equals(roomid)){
+        if (!"axyy".equals(roomid)) {
             return RequestResult.ERROR("roomid错误");
         }
         user.setOpenid(openid);
@@ -107,12 +111,13 @@ public class UserController {
         return RequestResult.ERROR("保存失败！");
     }
 
-//----------------------------------
+
+    //----------------------------------
     @ApiOperation("list")
     @GetMapping("list")
     public Map list(@RequestParam(required = false, defaultValue = "1") int page,
                     @RequestParam(required = false, defaultValue = "10") int size) {
-        List<User> users = userService.list(page,size);
+        List<User> users = userService.list(page, size);
         HashMap map = new HashMap();
         map.put("code", 0);
         map.put("msg", "成功");
@@ -123,16 +128,17 @@ public class UserController {
 
     @ApiOperation("删除")
     @GetMapping("deleteById")
-    public RequestResult deleteById(Long id){
+    public RequestResult deleteById(Long id) {
         int result = userService.deleteById(id);
-        if(result>0){
+        if (result > 0) {
             return RequestResult.SUCCESS();
         }
         return RequestResult.ERROR("删除失败");
     }
+
     @ApiOperation("搜索")
     @GetMapping("search")
-    public Map search(String name){
+    public Map search(String name) {
         List<User> waters = userService.search(name);
         HashMap map = new HashMap();
         map.put("code", 0);
@@ -144,7 +150,7 @@ public class UserController {
 
     @ApiOperation("添加")
     @GetMapping("add")
-    public RequestResult add(@RequestBody User user){
-        return  RequestResult.SUCCESS();
+    public RequestResult add(@RequestBody User user) {
+        return RequestResult.SUCCESS();
     }
 }

@@ -30,11 +30,11 @@ public class ImgController {
     private ImgService imgService;
 
     @Value("${web.upload-path}")
-    String filePath ;
+    String filePath;
 
     @ApiOperation("上传图片")
     @PostMapping("upload")
-    public RequestResult upload(MultipartFile file, Model model, HttpServletRequest request) {
+    public RequestResult upload(Integer type, Long foreignid, MultipartFile file, Model model, HttpServletRequest request) {
         log.info("[upload]");
         if (file.isEmpty()) {
             System.out.println("文件为空");
@@ -54,13 +54,18 @@ public class ImgController {
             log.error("[upload img error],error={}", e);
             return RequestResult.ERROR("添加失败");
         }
-        return RequestResult.SUCCESS("",newFileName);
+
+        imgService.insert(type, foreignid, newFileName);
+
+
+        return RequestResult.SUCCESS("", newFileName);
     }
+
     @ApiOperation("uploadSome")
     @PostMapping("uploadSome")
     public RequestResult uploadSome(Integer type, Integer foreignid, MultipartFile[] files, Model model, HttpServletRequest request) {
         log.info("[uploadSome]");
-        if(files.length<0){
+        if (files.length < 0) {
             return RequestResult.ERROR("没有图片");
         }
         File file2 = new File(filePath);
@@ -84,7 +89,7 @@ public class ImgController {
 
     @ApiOperation("获取某类型的图片")
     @GetMapping("getImgs")
-    public List getImgs(int type,String foreignId){
+    public List getImgs(int type, String foreignId) {
         List imgs = imgService.getImgs(type, foreignId);
         return imgs;
     }

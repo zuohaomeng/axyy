@@ -34,6 +34,7 @@ public class NoticeServiceImpl implements NoticeService {
     public int add(Notice notice) {
         notice.setCreateDate(new Date());
         notice.setStatus("发送成功");
+        notice.setImgurl("http://127.0.0.1:10010/" + notice.getImgurl());
         return noticeMapper.insert(notice);
     }
 
@@ -69,6 +70,15 @@ public class NoticeServiceImpl implements NoticeService {
             wrapper.eq(Notice::getType, type);
         }
         List<Notice> notices = noticeMapper.selectList(wrapper);
+        return notices;
+    }
+
+    @Override
+    public List<Notice> listByDate(int page, int limit) {
+        String limitSql = (page - 1) * limit + "," + limit;
+        List<Notice> notices = noticeMapper.selectList(new LambdaQueryWrapper<Notice>()
+                .last("limit " + limitSql)
+                .orderByDesc(Notice::getId));
         return notices;
     }
 }

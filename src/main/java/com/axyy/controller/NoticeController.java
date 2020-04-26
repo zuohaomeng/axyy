@@ -1,10 +1,14 @@
 package com.axyy.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import com.axyy.entity.Notice;
+import com.axyy.entity.vo.NoticeVo;
 import com.axyy.service.NoticeService;
 import com.axyy.util.RequestResult;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -97,5 +101,36 @@ public class NoticeController {
         map.put("count", notices.size());
         map.put("data", notices);
         return map;
+    }
+
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>小程序
+    @ApiOperation("根据时间排序")
+    @GetMapping("listByDate")
+    public RequestResult listByDate(@RequestParam(required = false, defaultValue = "1") int page,
+                                    @RequestParam(required = false, defaultValue = "10") int limit) {
+        List<Notice> notices = noticeService.listByDate(page, limit);
+        List<NoticeVo> noticeVos = new ArrayList<>();
+        for (Notice n: notices) {
+            noticeVos.add(convertToVo(n));
+        }
+        return RequestResult.SUCCESS(noticeVos);
+    }
+
+    @ApiOperation("getVo")
+    @GetMapping("getVo")
+    public RequestResult getVo(Long id) {
+        Notice notice = noticeService.getById(id);
+
+        return RequestResult.SUCCESS(convertToVo(notice));
+    }
+    private NoticeVo convertToVo(Notice notice){
+        return NoticeVo.builder()
+                .id(notice.getId())
+                .content(notice.getContent())
+                .createDate(DateUtil.format(notice.getCreateDate(), "MM月dd日"))
+                .imgurl(notice.getImgurl())
+                .status(notice.getStatus())
+                .title(notice.getTitle())
+                .type(notice.getType()).build();
     }
 }

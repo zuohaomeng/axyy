@@ -43,4 +43,7 @@ public interface NoticeService {
     int deleteById(int id);
 
     List<Notice> search(String type, String keyword);
+
+    List<Notice> listByDate(int page, int limit);
+
 }

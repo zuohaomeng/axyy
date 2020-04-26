@@ -7,4 +7,5 @@ import java.util.List;
  */
 public interface ImgService {
     List getImgs(int type, String foreignId);
+    int insert(int type,Long foreignId,String url);
 }

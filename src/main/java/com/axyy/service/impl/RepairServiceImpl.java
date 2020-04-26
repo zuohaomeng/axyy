@@ -6,11 +6,13 @@ import com.axyy.mapper.RepairMapper;
 import com.axyy.mapper.UserMapper;
 import com.axyy.service.RepairService;
 import com.axyy.service.UserService;
+import com.axyy.util.IDUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,9 +45,18 @@ public class RepairServiceImpl implements RepairService {
     }
 
     @Override
-    public Integer add(Repair repair) {
+    public Long add(Repair repair) {
         User user = userService.getById(repair.getUserid());
-        return null;
+        if (user != null) {
+            repair.setAddress(user.getBuilding() + user.getUnit() + user.getApartment());
+            repair.setUsername(user.getName());
+            repair.setPhone(user.getPhone());
+            repair.setStatus("未派单");
+            repair.setCreatetime(new Date());
+        }
+        repair.setRepairNo(IDUtil.createId());
+        repairMapper.insert(repair);
+        return repair.getId();
     }
 
     @Override
