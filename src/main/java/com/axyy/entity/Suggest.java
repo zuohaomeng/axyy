@@ -39,7 +39,7 @@ public class Suggest {
   /**
    * 创建时间
    */
-  private Date createDate;
+    private Date createDate;
   /**
    * 状态
    */

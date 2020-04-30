@@ -90,4 +90,22 @@ public class SuggestController {
         }
         return RequestResult.ERROR("修改失败");
     }
+
+
+
+
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    @ApiOperation("插入数据")
+    @PostMapping("addByUserId")
+    public RequestResult add(@RequestBody String content,@RequestParam String type,@RequestParam long userid) {
+        Suggest suggest = new Suggest();
+        suggest.setContent(content);
+        suggest.setUserid(userid);
+        suggest.setType(type);
+        Long repairId = suggestService.add(suggest);
+        if (repairId > 0) {
+            return RequestResult.SUCCESS("",repairId);
+        }
+        return RequestResult.ERROR("添加失败");
+    }
 }

@@ -1,13 +1,21 @@
 package com.axyy.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.axyy.entity.Clean;
+import com.axyy.entity.User;
+import com.axyy.entity.vo.CleanAddVo;
 import com.axyy.mapper.CleanMapper;
+import com.axyy.mapper.UserMapper;
 import com.axyy.service.CleanService;
+import com.axyy.service.UserService;
+import com.axyy.util.IDUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +25,10 @@ import java.util.List;
 @Service
 public class CleanServiceImpl implements CleanService {
     @Resource
+    private UserService userService;
+    @Resource
     private CleanMapper cleanMapper;
+
     @Override
     public Integer order(Clean clean) {
         Integer result = cleanMapper.insert(clean);
@@ -26,7 +37,7 @@ public class CleanServiceImpl implements CleanService {
 
     @Override
     public List<Clean> list(int page, int size) {
-        String limitSql = "limit " +(page-1)*size+","+size;
+        String limitSql = "limit " + (page - 1) * size + "," + size;
         List<Clean> cleans = cleanMapper.selectList(new LambdaQueryWrapper<Clean>()
                 .last(limitSql));
         return cleans;
@@ -53,7 +64,7 @@ public class CleanServiceImpl implements CleanService {
         LambdaQueryWrapper<Clean> wrapper = new LambdaQueryWrapper<Clean>()
                 .like(Clean::getOrderNo, orderNo)
                 .last("limit 0,10");
-        if(!"0".equals(type)){
+        if (!"0".equals(type)) {
             wrapper.eq(Clean::getType, type);
         }
         return cleanMapper.selectList(wrapper);
@@ -63,4 +74,35 @@ public class CleanServiceImpl implements CleanService {
     public int setNext(Long id) {
         return cleanMapper.setNext(id);
     }
+
+    @Override
+    public int addCleanByVo(CleanAddVo cleanAddVo) {
+        User user = userService.getById(cleanAddVo.getUserid());
+        Clean clean = Clean.builder()
+                .userid(cleanAddVo.getUserid())
+                .orderNo(IDUtil.createId() + "2")
+                .type(cleanAddVo.getType())
+                .worktime(DateUtil.parse(cleanAddVo.getWorktime(), "yyyy-MM-dd hh:mm"))
+                .price(cleanAddVo.getPrice())
+                .username(cleanAddVo.getName())
+                .phone(cleanAddVo.getPhone())
+                .status("已下单")
+                .build();
+        if (StringUtils.isEmpty(cleanAddVo.getAddress())) {
+            clean.setAddress(user.getBuilding() + user.getUnit() + user.getApartment());
+        } else {
+            clean.setAddress(cleanAddVo.getAddress());
+        }
+        return cleanMapper.insert(clean);
+    }
+
+    @Override
+    public List<Clean> wxlist(int page, int size, long userid) {
+        String limitSql = "limit " + (page - 1) * size + "," + size;
+        List<Clean> cleans = cleanMapper.selectList(new LambdaQueryWrapper<Clean>()
+                .last(limitSql)
+                .eq(Clean::getUserid, userid));
+        return cleans;
+    }
+
 }

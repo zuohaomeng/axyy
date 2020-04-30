@@ -1,7 +1,11 @@
 package com.axyy.controller;
 
+import cn.hutool.core.date.DateUtil;
+import com.axyy.entity.Img;
 import com.axyy.entity.Notice;
 import com.axyy.entity.Repair;
+import com.axyy.entity.vo.RepairListVo;
+import com.axyy.service.ImgService;
 import com.axyy.service.RepairService;
 import com.axyy.util.RequestResult;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +28,8 @@ public class RepairController {
 
     @Resource
     private RepairService repairService;
+    @Resource
+    private ImgService imgService;
 
     @ApiOperation("list")
     @GetMapping("list")
@@ -37,7 +43,6 @@ public class RepairController {
         map.put("data", list);
         return map;
     }
-
 
 
     @ApiOperation("批量删除")
@@ -82,19 +87,50 @@ public class RepairController {
         return RequestResult.ERROR("修改失败");
     }
 
-    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     @ApiOperation("插入数据")
     @PostMapping("addByUserId")
-    public RequestResult add(@RequestBody String content,@RequestParam long userid) {
+    public RequestResult add(@RequestBody String content, @RequestParam long userid) {
         Repair repair = new Repair();
         repair.setContent(content);
         repair.setUserid(userid);
         Long repairId = repairService.add(repair);
         if (repairId > 0) {
-            return RequestResult.SUCCESS("",repairId);
+            return RequestResult.SUCCESS("", repairId);
         }
         return RequestResult.ERROR("添加失败");
     }
 
+    @ApiOperation("微信保修记录")
+    @GetMapping("wxlist")
+    public Map<String, Object> wxlist(@RequestParam(required = false, defaultValue = "1") int page,
+                                      @RequestParam(required = false, defaultValue = "10") int size,
+                                      @RequestParam long userid) {
+        List<Repair> list = repairService.wxlist(page, size, userid);
+        List<RepairListVo> repairList = new ArrayList<RepairListVo>();
+        if (list != null) {
+            for (Repair r : list) {
+                RepairListVo vo = RepairListVo.builder()
+                        .r_id(r.getRepairNo())
+                        .state(r.getStatus())
+                        .repairContext(r.getContent())
+                        .submitTime(DateUtil.formatDateTime(r.getCreatetime()))
+                        .build();
+                List<Img> imgs = imgService.getImgs(2, String.valueOf(r.getId()));
+                if (imgs == null || imgs.size() <= 0) {
+                    vo.setR_icon(null);
+                } else {
+                    vo.setR_icon("http://127.0.0.1:10010/" + imgs.get(0).getUrl());
+                }
+                repairList.add(vo);
+            }
+        }
+        HashMap map = new HashMap();
+        map.put("code", 0);
+        map.put("msg", "成功");
+        map.put("count", repairList.size());
+        map.put("data", repairList);
+        return map;
+    }
 
 }

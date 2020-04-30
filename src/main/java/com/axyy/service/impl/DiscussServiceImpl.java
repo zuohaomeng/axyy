@@ -21,15 +21,11 @@ public class DiscussServiceImpl implements DiscussService {
     @Resource
     private DiscussMapper discussMapper;
 
-    @Override
-    public List getFromForum(Long forumId) {
-        List<Discuss> discusses = discussMapper.selectList(new LambdaQueryWrapper<Discuss>()
-                .eq(Discuss::getForumId, forumId));
-        return discusses;
-    }
+
 
     /**
      * 添加评论
+     *
      * @param discuss
      * @return
      */
@@ -37,6 +33,14 @@ public class DiscussServiceImpl implements DiscussService {
     public Integer add(Discuss discuss) {
         int result = discussMapper.insert(discuss);
         return result;
+    }
+
+    @Override
+    public List<Discuss> getListByForumid(long forumid) {
+        List<Discuss> discusses = discussMapper.selectList(new LambdaQueryWrapper<Discuss>()
+                .eq(Discuss::getForumId, forumid));
+        return discusses;
+
     }
 
 }

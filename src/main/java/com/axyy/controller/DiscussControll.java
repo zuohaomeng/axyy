@@ -1,7 +1,9 @@
 package com.axyy.controller;
 
 import com.axyy.entity.Discuss;
+import com.axyy.entity.User;
 import com.axyy.service.DiscussService;
+import com.axyy.service.UserService;
 import com.axyy.util.RequestResult;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +17,6 @@ import java.util.List;
 
 /**
  * 评论
- * @date 2020/4/15--14:16
  */
 @Slf4j
 @RestController
@@ -23,18 +24,20 @@ import java.util.List;
 public class DiscussControll {
     @Resource
     private DiscussService discussService;
+    @Resource
+    private UserService userService;
 
 
-    @ApiOperation("getfromforum")
-    @GetMapping("getfromforum")
-    public RequestResult getFromForum(Long forumId){
-        List fromForum = discussService.getFromForum(forumId);
-        return RequestResult.SUCCESS(fromForum);
-    }
-
-    @ApiOperation("add")
-    @PostMapping("add")
-    public RequestResult add(Discuss discuss){
+    @ApiOperation("添加评论")
+    @GetMapping("add")
+    public RequestResult add(long forumId,long userid,String content){
+        User user = userService.getById(userid);
+        Discuss discuss = Discuss.builder()
+                .content(content)
+                .userid(userid)
+                .forumId(forumId)
+                .username(user.getName())
+                .build();
         int result = discussService.add(discuss);
         if(result > 0){
             return RequestResult.SUCCESS();

@@ -19,4 +19,6 @@ public interface SuggestService {
     int setNext(Long id);
 
     List<Suggest> search(String type);
+
+    Long add(Suggest suggest);
 }

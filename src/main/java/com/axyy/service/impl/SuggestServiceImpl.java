@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,5 +59,13 @@ public class SuggestServiceImpl implements SuggestService {
         }
         List<Suggest> notices = suggestMapper.selectList(wrapper);
         return notices;
+    }
+    //添加
+    @Override
+    public Long add(Suggest suggest) {
+        suggest.setCreateDate(new Date());
+        suggest.setStatus("已提交");
+        suggestMapper.insert(suggest);
+        return suggest.getId();
     }
 }

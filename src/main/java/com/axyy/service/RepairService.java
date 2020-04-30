@@ -43,4 +43,7 @@ public interface RepairService {
     List<Repair> search(String status, String repairNo);
 
     int setNext(Long id);
+
+    List wxlist(int page, int size, long userid);
+
 }

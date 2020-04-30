@@ -1,6 +1,7 @@
 package com.axyy.service;
 
 import com.axyy.entity.Clean;
+import com.axyy.entity.vo.CleanAddVo;
 
 import java.util.List;
 
@@ -38,4 +39,9 @@ public interface CleanService {
     List<Clean> search(String type, String orderNo);
 
     int setNext(Long id);
+
+    int addCleanByVo(CleanAddVo clean);
+
+    List<Clean> wxlist(int page, int size, long userid);
+
 }

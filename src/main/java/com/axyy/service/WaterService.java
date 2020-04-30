@@ -1,6 +1,7 @@
 package com.axyy.service;
 
 import com.axyy.entity.Water;
+import com.axyy.entity.vo.WaterAddVo;
 
 import java.util.List;
 
@@ -24,4 +25,9 @@ public interface WaterService {
      * @return
      */
     int setNext(Long id);
+
+    int addWaterByVo(WaterAddVo waterAddVo);
+
+    List<Water> wxlist(int page, int size, long userid);
+
 }

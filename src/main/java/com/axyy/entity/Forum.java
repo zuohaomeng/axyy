@@ -31,15 +31,11 @@ public class Forum implements Serializable {
    */
   private String content;
   /**
-   * 图片
-   */
-  private List imgurl;
-  /**
    * 创建时间
    */
   private Date createTime;
 
-
+  private String address;
 
 
 }

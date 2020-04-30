@@ -1,16 +1,20 @@
 package com.axyy.controller;
 
+import cn.hutool.core.date.DateUtil;
 import com.axyy.entity.Clean;
+import com.axyy.entity.Img;
+import com.axyy.entity.Repair;
+import com.axyy.entity.vo.CleanAddVo;
+import com.axyy.entity.vo.CleanListVo;
+import com.axyy.entity.vo.RepairListVo;
 import com.axyy.service.CleanService;
 import com.axyy.util.RequestResult;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,5 +79,48 @@ public class CleanController {
             return RequestResult.SUCCESS();
         }
         return RequestResult.ERROR("设置失败");
+    }
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    @ApiOperation("插入数据")
+    @PostMapping("addByUserId")
+    public RequestResult add(@RequestBody CleanAddVo cleanAddVo, @RequestParam long userid) {
+        int result = cleanService.addCleanByVo(cleanAddVo);
+        if (result > 0) {
+            return RequestResult.SUCCESS();
+        }
+        return RequestResult.ERROR("添加失败");
+    }
+
+    @ApiOperation("微信保修记录")
+    @GetMapping("wxlist")
+    public Map<String, Object> wxlist(@RequestParam(required = false, defaultValue = "1") int page,
+                                      @RequestParam(required = false, defaultValue = "10") int size,
+                                      @RequestParam long userid) {
+        List<Clean> list = cleanService.wxlist(page, size, userid);
+        List<CleanListVo> cleanList = new ArrayList();
+        for (Clean c:list) {
+            CleanListVo vo = CleanListVo.builder()
+                    .b_id(c.getOrderNo())
+                    .b_price(c.getPrice())
+                    .b_time(DateUtil.format(c.getWorktime(), "yyyy-MM-dd hh:mm"))
+                    .b_title(c.getType())
+                    .state(c.getStatus()).build();
+            if("日式精细擦窗".equals(vo.getB_title())){
+                vo.setB_icon("../../images/clean1-3.jpg");
+            }else if("居家保洁".equals(vo.getB_title())) {
+                vo.setB_icon("../../images/clean1-1.jpg");
+            }else if("卫生间消毒".equals(vo.getB_title())) {
+                vo.setB_icon("../../images/clean1-4.jpg");
+            }else {
+                vo.setB_icon("../../images/clean1-2.jpg");
+            }
+            cleanList.add(vo);
+        }
+        HashMap map = new HashMap();
+        map.put("code", 0);
+        map.put("msg", "成功");
+        map.put("count", cleanList.size());
+        map.put("data", cleanList);
+        return map;
     }
 }

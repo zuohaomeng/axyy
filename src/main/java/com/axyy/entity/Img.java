@@ -28,7 +28,7 @@ public class Img implements Serializable {
   private long id;
   /**
    * 类型
-   * 1为动态，2为修理，3为通知公告
+   * 1为动态，2为修理，3为通知公告,4为投诉建议
    */
   private long type;
   /**

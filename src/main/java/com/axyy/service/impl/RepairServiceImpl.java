@@ -54,7 +54,7 @@ public class RepairServiceImpl implements RepairService {
             repair.setStatus("未派单");
             repair.setCreatetime(new Date());
         }
-        repair.setRepairNo(IDUtil.createId());
+        repair.setRepairNo(IDUtil.createId()+"1");
         repairMapper.insert(repair);
         return repair.getId();
     }
@@ -98,5 +98,14 @@ public class RepairServiceImpl implements RepairService {
             return repairMapper.setNext(status, repair.getId());
         }
         return 0;
+    }
+
+    @Override
+    public List wxlist(int page, int size, long userid) {
+        String limitSql = "limit " + (page - 1) * size + "," + size;
+        List<Repair> repairs = repairMapper.selectList(new LambdaQueryWrapper<Repair>()
+                .last(limitSql)
+                .eq(Repair::getUserid, userid));
+        return repairs;
     }
 }
