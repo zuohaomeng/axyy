@@ -47,6 +47,7 @@ public class ForumServiceImpl implements ForumService {
 
         String limitSql = "limit "+(page-1)*size+","+size;
         List<Forum> forums = forumMapper.selectList(new LambdaQueryWrapper<Forum>()
+                .orderByDesc(Forum::getId)
                 .last(limitSql));
         return forums;
     }
