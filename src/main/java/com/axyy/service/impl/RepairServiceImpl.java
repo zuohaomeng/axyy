@@ -102,8 +102,9 @@ public class RepairServiceImpl implements RepairService {
     public List wxlist(int page, int size, long userid) {
         String limitSql = "limit " + (page - 1) * size + "," + size;
         List<Repair> repairs = repairMapper.selectList(new LambdaQueryWrapper<Repair>()
-                .last(limitSql)
-                .eq(Repair::getUserid, userid));
+                .eq(Repair::getUserid, userid)
+                .orderByDesc(Repair::getId)
+                .last(limitSql));
         return repairs;
     }
 

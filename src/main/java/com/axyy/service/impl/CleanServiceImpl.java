@@ -103,7 +103,8 @@ public class CleanServiceImpl implements CleanService {
         String limitSql = "limit " + (page - 1) * size + "," + size;
         List<Clean> cleans = cleanMapper.selectList(new LambdaQueryWrapper<Clean>()
                 .last(limitSql)
-                .eq(Clean::getUserid, userid));
+                .eq(Clean::getUserid, userid)
+                .orderByDesc(Clean::getId));
         return cleans;
     }
 

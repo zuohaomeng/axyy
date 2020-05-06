@@ -91,7 +91,8 @@ public class WaterServiceImpl implements WaterService {
         String limitSql = "limit " + (page - 1) * size + "," + size;
         List<Water> waters = waterMapper.selectList(new LambdaQueryWrapper<Water>()
                 .last(limitSql)
-                .eq(Water::getUserid, userid));
+                .eq(Water::getUserid, userid)
+                .orderByDesc(Water::getId));
         return waters;
     }
 }
