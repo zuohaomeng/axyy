@@ -11,5 +11,8 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface CleanMapper extends BaseMapper<Clean> {
     @Update("update clean set status='已完成' where id=#{id}")
-    int setNext(Long id);
+    int setOk(Long id);
+
+    @Update("update clean set status='已派单',cleanname=#{workerName}, cleanphone=#{workerPhone} where id=#{id} ")
+    int setWorker(Long id, String workerName, String workerPhone);
 }

@@ -49,10 +49,13 @@
     <table class="layui-hide" id="articleList" lay-filter="test"></table>
     <script type="text/html" id="operateTpl">
         <a class="layui-btn layui-btn-danger layui-btn-xs" title="查看" lay-event="watch"  >
-            查看图片
+            图片
         </a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" title="下一步" lay-event="next"  >
+        <a class="layui-btn layui-btn-danger layui-btn-xs" title="分配工人" lay-event="setworker"  >
             <i class="layui-icon">&#xe63c;</i>
+        </a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" title="完成" lay-event="next"  >
+            <i class="layui-icon">&#xe642;</i>
         </a>
         <a title="删除" lay-event="del" >
             <i class="layui-icon">&#xe640;</i>
@@ -83,13 +86,14 @@
                 {field: 'address', title: '地点', sort: true},
                 {field: 'username', title: '联系人', sort: true},
                 {field: 'phone', title: '电话', sort: true},
-                {
-                    field: 'createtime',
-                    title: '提交时间',
-                    sort: true,
-                    templet: "<div>{{layui.util.toDateString(d.createtime, 'yyyy年MM月dd日 ')}}</div>"
-                },
+                // {
+                //     field: 'createtime',
+                //     title: '提交时间',
+                //     sort: true,
+                //     templet: "<div>{{layui.util.toDateString(d.createtime, 'yyyy年MM月dd日 ')}}</div>"
+                // },
                 {field: 'status', title: '状态', sort: true},
+                {field: 'repairName', title: '工人', sort: true},
                 {field: 'right', title: '操作', toolbar: '#operateTpl'},
             ]]
         });
@@ -108,13 +112,14 @@
                     {field: 'address', title: '地点', sort: true},
                     {field: 'username', title: '联系人', sort: true},
                     {field: 'phone', title: '电话', sort: true},
-                    {
-                        field: 'createtime',
-                        title: '提交时间',
-                        sort: true,
-                        templet: "<div>{{layui.util.toDateString(d.createtime, 'yyyy年MM月dd日 ')}}</div>"
-                    },
+                    // {
+                    //     field: 'createtime',
+                    //     title: '提交时间',
+                    //     sort: true,
+                    //     templet: "<div>{{layui.util.toDateString(d.createtime, 'yyyy年MM月dd日 ')}}</div>"
+                    // },
                     {field: 'status', title: '状态', sort: true},
+                    {field: 'repairName', title: '工人', sort: true},
                     {field: 'right', title: '操作', toolbar: '#operateTpl'},
 
                 ]]
@@ -124,7 +129,18 @@
         //查看文章
         table.on('tool(test)', function (obj) {
             var data = obj.data;
-            if (obj.event === 'watch') {
+            if(obj.event === 'setworker'){
+                layer.open({
+                    type: 2,
+                    area: [($(window).width() * 0.4) + 'px', ($(window).height() - 250) + 'px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    shadeClose: true,
+                    shade: 0.4,
+                    title: "查看",
+                    content: "./repair_worker.html#/id=" + data.id,
+                });
+            }else if (obj.event === 'watch') {
                 layer.open({
                     type: 2,
                     area: [($(window).width() * 0.5) + 'px', ($(window).height() - 50) + 'px'],

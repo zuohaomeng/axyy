@@ -46,4 +46,6 @@ public interface RepairService {
 
     List wxlist(int page, int size, long userid);
 
+    int setworker(Long id, String repairName);
+
 }

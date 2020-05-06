@@ -38,10 +38,11 @@ public interface CleanService {
 
     List<Clean> search(String type, String orderNo);
 
-    int setNext(Long id);
+    int setOk(Long id);
 
     int addCleanByVo(CleanAddVo clean);
 
     List<Clean> wxlist(int page, int size, long userid);
 
+    int setworker(Long id, String workerName);
 }

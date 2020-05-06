@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>添加消息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../static/css/font.css">
+    <link rel="stylesheet" href="../../static/css/weadmin.css">
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../lib/layui/css/modules/layer/default/layer.css" media="all">
+    <script type="text/javascript" src="../../lib/jquery-2.1.3.min.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="weadmin-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label">分配工人</label>
+            <div class="layui-input-inline">
+                <select id="type" name="repairName" lay-verify="required" autocomplete="off" class="layui-input">
+                    <option value="李师傅" selected>李师傅</option>
+                    <option value="钱师傅">钱师傅</option>
+                    <option value="谢师傅">谢师傅</option>
+                    <option value="王师傅">王师傅</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="layui-btn" lay-submit lay-filter="add"
+                style="position: relative; left: 20% ">立即设置
+        </button>
+    </form>
+
+
+</div>
+<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../../lib/layui/lay/modules/layer.js"></script>
+<script>
+    layui.use(['form', 'layer', 'upload'], function () {
+        location.search;
+        var layer=layui.layer;
+        var router = layui.router();
+        var id = router.search.id;
+        var form = layui.form,
+            $ = layui.jquery,
+            upload = layui.upload;
+
+        //监听提交
+        form.on('submit(add)', function (data) {
+            console.log(data);
+            $.ajax({
+                url: 'http://localhost:10010/repair/setworker?id='+id,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data.field),
+                //请求成功时执行该函数
+                success: function (result) {
+                    if (result.code == '0') {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    } else {
+                        alert(result.msg);
+                    }
+                },
+                //请求失败时执行该函数
+                error: function (errorMsg) {
+                    alert("数据异常!" + errorMsg.msg);
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+
+</html>

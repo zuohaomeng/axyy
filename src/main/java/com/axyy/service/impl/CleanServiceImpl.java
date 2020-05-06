@@ -1,8 +1,10 @@
 package com.axyy.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.axyy.component.Worker;
 import com.axyy.entity.Clean;
 import com.axyy.entity.User;
+import com.axyy.entity.Water;
 import com.axyy.entity.vo.CleanAddVo;
 import com.axyy.mapper.CleanMapper;
 import com.axyy.mapper.UserMapper;
@@ -71,8 +73,8 @@ public class CleanServiceImpl implements CleanService {
     }
 
     @Override
-    public int setNext(Long id) {
-        return cleanMapper.setNext(id);
+    public int setOk(Long id) {
+        return cleanMapper.setOk(id);
     }
 
     @Override
@@ -103,6 +105,13 @@ public class CleanServiceImpl implements CleanService {
                 .last(limitSql)
                 .eq(Clean::getUserid, userid));
         return cleans;
+    }
+
+    @Override
+    public int setworker(Long id, String workerName) {
+        String workerPhone  = (String)Worker.workers.get(workerName);
+        int result = cleanMapper.setWorker(id, workerName, workerPhone);
+        return result;
     }
 
 }

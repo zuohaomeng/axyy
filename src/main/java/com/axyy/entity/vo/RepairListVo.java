@@ -21,4 +21,12 @@ public class RepairListVo {
     private int r_state;
     private String state;
     private String r_icon;
+    /**
+     * 修理人
+     */
+    private String repairName;
+    /**
+     * 修理电话
+     */
+    private String repairPhone;
 }

@@ -67,6 +67,14 @@ public class Repair implements Serializable {
    */
   private String status;
 
+  /**
+   * 修理人
+   */
+  private String repairName;
+  /**
+   * 修理电话
+   */
+  private String repairPhone;
 
 
 

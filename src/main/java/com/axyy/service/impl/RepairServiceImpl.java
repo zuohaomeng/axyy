@@ -1,5 +1,6 @@
 package com.axyy.service.impl;
 
+import com.axyy.component.Worker;
 import com.axyy.entity.Repair;
 import com.axyy.entity.User;
 import com.axyy.mapper.RepairMapper;
@@ -92,9 +93,6 @@ public class RepairServiceImpl implements RepairService {
         Repair repair = repairMapper.selectById(id);
         if (repair != null) {
             String status = "已完成";
-            if ("未派单".equals(repair.getStatus())) {
-                status = "维修中";
-            }
             return repairMapper.setNext(status, repair.getId());
         }
         return 0;
@@ -107,5 +105,12 @@ public class RepairServiceImpl implements RepairService {
                 .last(limitSql)
                 .eq(Repair::getUserid, userid));
         return repairs;
+    }
+
+    @Override
+    public int setworker(Long id, String repairName) {
+        String repairPhone = (String)Worker.workers.get(repairName);
+        int result = repairMapper.setworker(id, repairName, repairPhone);
+        return result;
     }
 }

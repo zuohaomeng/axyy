@@ -13,4 +13,6 @@ public interface RepairMapper extends BaseMapper<Repair> {
 
     @Update("update  repair set status=#{status} where id=#{id}")
     int setNext(String status,long id);
+    @Update("update  repair set status='已派单',repairname=#{repairName},repairPhone=#{repairPhone} where id=#{id}")
+    int setworker(Long id, String repairName, String repairPhone);
 }

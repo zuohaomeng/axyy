@@ -20,4 +20,12 @@ public class CleanListVo {
     private String b_title;
     private String state;
     private String b_time;
+    /**
+     * 家政电话
+     */
+    private String cleanphone;
+    /**
+     * 家政姓名
+     */
+    private String cleanname;
 }

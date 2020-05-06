@@ -63,6 +63,12 @@ public class Clean implements Serializable {
      * 状态
      */
     private String status;
-
-
+    /**
+     * 家政电话
+     */
+    private String cleanphone;
+    /**
+     * 家政姓名
+     */
+    private String cleanname;
 }

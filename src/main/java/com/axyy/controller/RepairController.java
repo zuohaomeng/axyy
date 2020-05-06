@@ -86,7 +86,15 @@ public class RepairController {
         }
         return RequestResult.ERROR("修改失败");
     }
-
+    @ApiOperation("调整状态")
+    @RequestMapping("setworker")
+    public RequestResult setworker(Long id,@RequestBody Repair repair) {
+        int result = repairService.setworker(id,repair.getRepairName());
+        if (result > 0) {
+            return RequestResult.SUCCESS();
+        }
+        return RequestResult.ERROR("修改失败");
+    }
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     @ApiOperation("插入数据")
     @PostMapping("addByUserId")
@@ -115,6 +123,8 @@ public class RepairController {
                         .state(r.getStatus())
                         .repairContext(r.getContent())
                         .submitTime(DateUtil.formatDateTime(r.getCreatetime()))
+                        .repairName(r.getRepairName())
+                        .repairPhone(r.getRepairPhone())
                         .build();
                 List<Img> imgs = imgService.getImgs(2, String.valueOf(r.getId()));
                 if (imgs == null || imgs.size() <= 0) {

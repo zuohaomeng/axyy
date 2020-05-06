@@ -71,10 +71,19 @@ public class CleanController {
         map.put("data", cleans);
         return map;
     }
-    @ApiOperation("设置状态")
-    @GetMapping("setnext")
-    public RequestResult setNext(Long id){
-        int result = cleanService.setNext(id);
+    @ApiOperation("设置完成")
+    @GetMapping("setok")
+    public RequestResult setOk(Long id){
+        int result = cleanService.setOk(id);
+        if (result > 0) {
+            return RequestResult.SUCCESS();
+        }
+        return RequestResult.ERROR("设置失败");
+    }
+    @ApiOperation("设置完成")
+    @PostMapping("setworker")
+    public RequestResult setworker(Long id,@RequestBody Clean clean){
+        int result = cleanService.setworker(id,clean.getCleanname());
         if (result > 0) {
             return RequestResult.SUCCESS();
         }
@@ -104,7 +113,9 @@ public class CleanController {
                     .b_price(c.getPrice())
                     .b_time(DateUtil.format(c.getWorktime(), "yyyy-MM-dd hh:mm"))
                     .b_title(c.getType())
-                    .state(c.getStatus()).build();
+                    .state(c.getStatus())
+                    .cleanname(c.getCleanname())
+                    .cleanphone(c.getCleanphone()).build();
             if("日式精细擦窗".equals(vo.getB_title())){
                 vo.setB_icon("../../images/clean1-3.jpg");
             }else if("居家保洁".equals(vo.getB_title())) {
