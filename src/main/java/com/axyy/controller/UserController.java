@@ -104,9 +104,9 @@ public class UserController {
             return RequestResult.ERROR("roomid错误");
         }
         user.setOpenid(openid);
-        int result = userService.saveUserByOpenId(user);
+        long result = userService.saveUserByOpenId(user);
         if (result > 0) {
-            return RequestResult.SUCCESS("保存成功！");
+            return RequestResult.SUCCESS("保存成功！",result);
         }
         return RequestResult.ERROR("保存失败！");
     }

@@ -59,12 +59,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int saveUserByOpenId(User user) {
+    public long saveUserByOpenId(User user) {
         User user2 = getUserByOpenid(user.getOpenid());
         if (user2 == null) {
-            return userMapper.insert(user);
+             userMapper.insert(user);
+            return user.getId();
         } else {
-            return userMapper.saveUserByOpenId(user);
+             userMapper.saveUserByOpenId(user);
+            return  user2.getId();
         }
     }
 

@@ -35,4 +35,5 @@ public class ForumListwxVO {
     private List<String> dianzan;
     //评论
     private List<Discuss> pinglun;
+
 }

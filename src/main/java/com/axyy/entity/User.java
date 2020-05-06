@@ -68,6 +68,8 @@ public class User {
    * uuid
    */
   private String openid;
-
-
+  /**
+   * 头像
+   */
+  private String headImg;
 }

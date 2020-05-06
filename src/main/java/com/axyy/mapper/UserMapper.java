@@ -17,7 +17,7 @@ public interface UserMapper extends BaseMapper<User> {
     User getInformationById(@Param("id") Long id);
 
     @Update("update user set name=#{user.name},phone=#{user.phone},building=#{user.building}," +
-            "unit=#{user.unit},apartment=#{user.apartment},idcard=#{user.idcard} " +
+            "unit=#{user.unit},apartment=#{user.apartment},idcard=#{user.idcard},headimg=#{user.headImg}" +
             "where openid=#{user.openid}")
     Integer saveUserByOpenId(@Param("user") User user);
 }

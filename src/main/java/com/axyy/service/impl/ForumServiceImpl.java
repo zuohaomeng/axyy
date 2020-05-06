@@ -81,6 +81,7 @@ public class ForumServiceImpl implements ForumService {
                     User user = userService.getById(f.getUserid());
                     if(user!=null){
                         f.setNickname(user.getName());
+                        f.setHeadimgurl(user.getHeadImg());
                     }
                 }
                 latch.countDown();

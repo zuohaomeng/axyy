@@ -21,7 +21,7 @@ public interface UserService {
 
     User getUserByOpenid(String openid);
 
-    int saveUserByOpenId(User user);
+    long saveUserByOpenId(User user);
 
     List<User> list(int page, int size);
 
