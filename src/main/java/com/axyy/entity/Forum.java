@@ -23,7 +23,7 @@ public class Forum implements Serializable {
   @TableId(type= IdType.AUTO)
   private long id;
   /**
-   * 用户id
+   * 用户
    */
   private long userid;
   /**
