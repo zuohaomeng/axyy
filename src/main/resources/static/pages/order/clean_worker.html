@@ -47,7 +47,7 @@
 <script>
     layui.use(['form', 'layer', 'upload'], function () {
         location.search;
-        var layer=layui.layer;
+        var layer = layui.layer;
         var router = layui.router();
         var id = router.search.id;
         var form = layui.form,
@@ -58,15 +58,16 @@
         form.on('submit(add)', function (data) {
             console.log(data);
             $.ajax({
-                url: 'http://localhost:10010/clean/setworker?id='+id,
+                url: 'http://localhost:10010/clean/setworker?id=' + id,
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data.field),
                 //请求成功时执行该函数
                 success: function (result) {
                     if (result.code == '0') {
-                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                            parent.layer.close(index); //再执行关闭
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        parent.location.reload();
                     } else {
                         alert(result.msg);
                     }

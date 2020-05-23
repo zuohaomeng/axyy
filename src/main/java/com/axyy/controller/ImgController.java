@@ -55,7 +55,9 @@ public class ImgController {
             return RequestResult.ERROR("添加失败");
         }
 
-        imgService.insert(type, foreignid, newFileName);
+        if (type != null && foreignid != null) {
+            imgService.insert(type, foreignid, newFileName);
+        }
 
 
         return RequestResult.SUCCESS("", newFileName);

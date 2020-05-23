@@ -13,4 +13,8 @@ import org.apache.ibatis.annotations.UpdateProvider;
 public interface SuggestMapper extends BaseMapper<Suggest> {
     @Update("update suggest set status='已查看' where id = #{id}")
     int setNext(Long id);
+
+    @Update("update suggest set status='已查看',reply=#{reply} where id = #{id}")
+    int replyById(Long id, String reply);
+
 }

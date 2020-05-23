@@ -23,19 +23,20 @@
 <div class="weadmin-body">
     <form class="layui-form">
         <div class="layui-form-item">
-            <label for="type" class="layui-form-label">分配工人</label>
+            <label for="reply" class="layui-form-label">回复</label>
             <div class="layui-input-inline">
-                <select id="type" name="repairName" lay-verify="required" autocomplete="off" class="layui-input">
-                    <option value="李师傅" selected>李师傅</option>
-                    <option value="钱师傅">钱师傅</option>
-                    <option value="谢师傅">谢师傅</option>
-                    <option value="王师傅">王师傅</option>
-                </select>
+                <!--<select id="type" name="repairName" lay-verify="required" autocomplete="off" class="layui-input">-->
+                    <!--<option value="李师傅" selected>李师傅</option>-->
+                    <!--<option value="钱师傅">钱师傅</option>-->
+                    <!--<option value="谢师傅">谢师傅</option>-->
+                    <!--<option value="王师傅">王师傅</option>-->
+                <!--</select>-->
+                <textarea id="reply" name="reply" lay-verify="required" autocomplete="off" class="layui-input" ></textarea>
             </div>
         </div>
 
         <button type="submit" class="layui-btn" lay-submit lay-filter="add"
-                style="position: relative; left: 20% ">立即设置
+                style="position: relative; left: 20% ">回复
         </button>
     </form>
 
@@ -57,7 +58,7 @@
         form.on('submit(add)', function (data) {
             console.log(data);
             $.ajax({
-                url: 'http://localhost:10010/repair/setworker?id='+id,
+                url: 'http://localhost:10010/suggest/replyById?id='+id,
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data.field),

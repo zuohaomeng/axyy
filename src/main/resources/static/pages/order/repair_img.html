@@ -16,11 +16,21 @@
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <style>
+        #demo{
+            width:300px;
+            height:300px;
+        }
+        #demo img{
+            width:250px;
+            height:250px;
+        }
+    </style>
     <![endif]-->
 </head>
 
 </div>
-<div style="left: 20%;width: 300px" id="demo">
+<div style="width:300px;height:300px;" id="demo">
 </div>
 <script src="../../lib/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript" src="../../lib/layui/lay/modules/layer.js"></script>
@@ -37,7 +47,7 @@
             success: function (result) {
                 if(result.length>0){
                     for (var i = 0; i < result.length; i++) {
-                        $("#demo").append("<img src='http://localhost:10010/" + result[i].url+"' /></br>")
+                        $("#demo").append("<img style='width:250px;height:250px;' src='http://localhost:10010/" + result[i].url+"' /></br>")
                     }
                 }else {
                     $("#demo").append("<p>无图片</p>")

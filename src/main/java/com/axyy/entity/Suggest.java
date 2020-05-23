@@ -24,6 +24,8 @@ public class Suggest {
    */
   @TableId(type = IdType.AUTO)
   private long id;
+
+  public String suggestNo;
   /**
    * 用户id
    */
@@ -44,8 +46,10 @@ public class Suggest {
    * 状态
    */
   private String status;
-
-
+  /**
+   * 回复
+   */
+  private String reply;
 
 
 }

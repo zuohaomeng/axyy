@@ -21,4 +21,8 @@ public interface SuggestService {
     List<Suggest> search(String type);
 
     Long add(Suggest suggest);
+
+    int replyById(Long id, String reply);
+
+    List wxList(Long userid,int page, int size);
 }

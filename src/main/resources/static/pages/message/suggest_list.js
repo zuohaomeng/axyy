@@ -77,7 +77,19 @@ layui.use(['table', 'jquery', 'form', 'admin'], function () {
                     alert("数据异常!" + errorMsg.msg);
                 }
             });
-        } else if (obj.event === 'del') {
+        } else if (obj.event === 'reply'&& data.status==="未查看") {
+            layer.open({
+                type: 2,
+                area: [($(window).width() * 0.4) + 'px', ($(window).height() - 250) + 'px'],
+                fix: false, //不固定
+                maxmin: true,
+                shadeClose: true,
+                shade: 0.4,
+                title: "查看",
+                content: "./suggest_reply.html#/id=" + data.id,
+            });
+        }
+        if (obj.event === 'del') {
             $.ajax({
                 url: 'http://localhost:10010/suggest/deleteById?id=' + data.id,
                 type: 'GET',
